@@ -29,7 +29,7 @@ export default function AboutPage() {
             </p>
             <p className="flex flex-wrap gap-2 pt-2">
               {["Quality service", "Genuine parts", "Customer satisfaction"].map((t) => (
-                <span key={t} className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-container text-gold text-label-md">
+                <span key={t} className="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-hairline text-on-surface text-label-md">
                   <Icon name="verified" className="text-[14px]" /> {t}
                 </span>
               ))}

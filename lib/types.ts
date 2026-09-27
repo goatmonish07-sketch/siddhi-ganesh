@@ -18,6 +18,7 @@ export interface PhoneModel {
   year: number;
   tier: Tier;
   variants: Variant[];
+  imageUrl?: string | null;
 }
 
 export interface ConditionOption {

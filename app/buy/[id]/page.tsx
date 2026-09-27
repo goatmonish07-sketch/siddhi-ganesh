@@ -70,7 +70,7 @@ export default async function ProductPage({ params }: Props) {
           <div className="flex items-baseline gap-3 tnum">
             <span className="font-display text-[36px] font-extrabold text-primary">{formatINR(p.price)}</span>
             <span className="text-body-md text-muted line-through">{formatINR(p.mrp)}</span>
-            {off > 0 && <span className="px-2 py-0.5 rounded bg-secondary-container text-label-md text-on-secondary-fixed">{off}% off</span>}
+            {off > 0 && <span className="px-2 py-0.5 rounded-md bg-surface-container text-label-md text-secondary">{off}% off</span>}
           </div>
           <div className="grid grid-cols-3 gap-2 text-center">
             <div className="rounded-xl bg-white border border-hairline p-3">

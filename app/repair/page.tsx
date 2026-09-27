@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Faq } from "@/components/Faq";
 import { Icon } from "@/components/Icon";
+import { Photo } from "@/components/Photo";
 import { RepairBooking } from "@/components/RepairBooking";
 import { Container, SectionHeading } from "@/components/Section";
 import { getBrands, getModels, getRepairServices } from "@/lib/data";
@@ -37,22 +38,28 @@ export default async function RepairPage() {
   const [brands, models, services] = await Promise.all([getBrands(), getModels(), getRepairServices()]);
   return (
     <>
-      <section className="bg-gradient-to-br from-primary-container to-primary text-white py-10">
-        <Container className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-          <div className="space-y-3 max-w-3xl">
-            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed text-label-sm uppercase">
-              <Icon name="build" className="text-[14px]" /> Service workshop · {SHOP.city}
-            </span>
-            <h1 className="text-[30px] leading-[38px] sm:text-headline-xl font-extrabold tracking-tight">Expert chip-level &amp; component mobile repair in Cheyyar</h1>
-            <p className="text-body-lg text-primary-fixed-dim">
-              Express screen &amp; battery replacement. Genuine parts. 90 to 180 days warranty. Direct service by {SHOP.owner} &amp; certified technicians.
+      <section className="border-b border-hairline">
+        <Container className="grid lg:grid-cols-[1.2fr_1fr] gap-6 lg:gap-10 items-center py-8 lg:py-12">
+          <div className="space-y-4">
+            <p className="text-label-md text-muted">Repair · {SHOP.name}, {SHOP.city}</p>
+            <h1 className="text-[30px] leading-[38px] sm:text-[40px] sm:leading-[48px] font-bold tracking-tight text-on-surface">Phone repair you can watch, with genuine parts</h1>
+            <p className="text-body-lg text-on-surface-variant max-w-xl">
+              Screen and battery replaced in about 30 minutes. 90 to 180 days warranty. Done by {SHOP.owner} &amp; certified technicians at {SHOP.street}.
             </p>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-body-sm text-on-surface-variant">
+              {["Free diagnosis", "Pay after repair", "Up to 180-day warranty"].map((t) => (
+                <li key={t} className="flex items-center gap-1.5"><Icon name="check" className="text-[16px] text-success" /> {t}</li>
+              ))}
+            </ul>
           </div>
-          <div className="rounded-xl bg-white/10 p-4 flex items-center gap-3 max-w-sm">
-            <span className="grid place-items-center w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-fixed font-display font-extrabold">30m</span>
-            <div>
-              <div className="text-label-lg">Express counter turnaround</div>
-              <div className="text-body-sm text-primary-fixed-dim">Wait at the shop while we fix it</div>
+          <div className="relative hidden sm:block overflow-hidden rounded-3xl bg-canvas aspect-[16/10]">
+            <Photo name="xiaomi-redmi" priority className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute left-4 bottom-4 flex items-center gap-3 rounded-2xl bg-white/90 backdrop-blur px-4 py-3 shadow-lift">
+              <span className="grid place-items-center w-11 h-11 rounded-xl bg-on-surface text-white font-display font-bold">30m</span>
+              <div>
+                <div className="text-label-lg text-on-surface">Express counter repair</div>
+                <div className="text-body-sm text-on-surface-variant">Wait at the shop while we fix it</div>
+              </div>
             </div>
           </div>
         </Container>
@@ -62,18 +69,17 @@ export default async function RepairPage() {
         <RepairBooking brands={brands} models={models} services={services} />
       </Container>
 
-      <section className="bg-primary-container text-white py-12 lg:py-16">
+      <section className="bg-surface-container-low border-y border-hairline py-12 lg:py-16">
         <Container>
-          <div className="text-label-sm uppercase tracking-widest text-gold">The Cheyyar customer shield</div>
-          <h2 className="text-[24px] sm:text-headline-lg font-bold mb-6">Warranties on every service</h2>
+          <SectionHeading eyebrow="Our promise" title="Warranties on every service" />
           <div className="grid md:grid-cols-3 gap-4">
             {WARRANTIES.map((w) => (
-              <div key={w.title} className="rounded-2xl bg-white/5 border border-white/10 p-5">
-                <span className="grid place-items-center w-11 h-11 rounded-lg bg-secondary-container text-on-secondary-fixed mb-3">
+              <div key={w.title} className="rounded-2xl bg-white border border-hairline p-5">
+                <span className="grid place-items-center w-11 h-11 rounded-full bg-surface-container text-on-surface mb-3">
                   <Icon name={w.icon} />
                 </span>
-                <h3 className="text-headline-sm">{w.title}</h3>
-                <p className="text-body-md text-primary-fixed-dim mt-1">{w.body}</p>
+                <h3 className="text-headline-sm text-on-surface">{w.title}</h3>
+                <p className="text-body-md text-on-surface-variant mt-1">{w.body}</p>
               </div>
             ))}
           </div>
@@ -86,7 +92,7 @@ export default async function RepairPage() {
           <div className="grid md:grid-cols-3 gap-4 mb-4">
             {WORKFLOW.map((w, i) => (
               <div key={w.title} className="rounded-2xl bg-white border border-hairline p-5 shadow-card">
-                <div className="font-display text-headline-md text-secondary">0{i + 1}</div>
+                <div className="font-display text-headline-md text-on-surface/20">0{i + 1}</div>
                 <h3 className="text-headline-sm text-primary mt-1">{w.title}</h3>
                 <p className="text-body-md text-on-surface-variant mt-1">{w.body}</p>
               </div>

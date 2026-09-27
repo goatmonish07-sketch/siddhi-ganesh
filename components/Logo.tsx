@@ -14,7 +14,7 @@ export function Logo({ light = false }: { light?: boolean }) {
         <span className={`font-display text-[15px] sm:text-headline-sm font-extrabold tracking-tight ${light ? "text-white" : "text-primary"}`}>
           {SHOP.name}
         </span>
-        <span className={`hidden sm:inline-block w-fit px-2 py-0.5 rounded-full text-label-sm ${light ? "bg-white/10 text-secondary-fixed" : "bg-surface-container text-primary"}`}>
+        <span className={`hidden sm:inline-block w-fit px-2 py-0.5 rounded-full text-label-sm ${light ? "bg-white/10 text-white/80" : "text-muted px-0"}`}>
           {SHOP.tagline}
         </span>
       </span>

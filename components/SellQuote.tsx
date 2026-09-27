@@ -9,7 +9,7 @@ import { sellMessage, waLink } from "@/lib/whatsapp";
 import { ContactFields, SuccessPanel, contactError, contactPayload, emptyContact, Spinner, useSubmitRequest } from "./booking";
 import { Icon } from "./Icon";
 import { MobileActionBar } from "./MobileActionBar";
-import { PhoneArt } from "./PhoneArt";
+import { BRAND_TINT, DeviceImage } from "./DeviceImage";
 
 function Impact({ value }: { value: number }) {
   if (value === 0) return <span className="text-label-md text-on-surface-variant tnum">₹0</span>;
@@ -113,8 +113,8 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
           {/* Device + variant */}
           <section className="rounded-2xl bg-white border border-hairline p-5 shadow-card">
             <div className="flex gap-4 items-start">
-              <div className="w-20 h-24 shrink-0 rounded-xl bg-[#f9f7f4] grid place-items-center">
-                <PhoneArt tint="#163a24" className="h-20" cameras={model.brandSlug === "apple" ? 2 : 3} />
+              <div className="w-24 h-28 sm:w-28 sm:h-32 shrink-0 rounded-xl bg-canvas grid place-items-center p-2">
+                <DeviceImage src={model.imageUrl} alt={`${brandName} ${model.name}`} tint={BRAND_TINT[model.brandSlug]} cameras={model.brandSlug === "apple" ? 2 : 3} className="h-full w-full" priority />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-start justify-between gap-2">
@@ -146,7 +146,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
                     }`}
                   >
                     {v.label}
-                    <span className={`ml-2 text-body-sm tnum ${variantIdx === i ? "text-gold" : "text-on-surface-variant"}`}>up to {formatINR(v.basePrice)}</span>
+                    <span className={`ml-2 text-body-sm tnum ${variantIdx === i ? "text-white/75" : "text-muted"}`}>up to {formatINR(v.basePrice)}</span>
                   </button>
                 ))}
               </div>
@@ -199,7 +199,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
           <form id="booking" onSubmit={onSubmit} className="rounded-2xl bg-white border border-hairline p-5 shadow-lift space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-label-sm uppercase tracking-widest text-secondary">{quote?.complete ? "Your buyback value" : "Estimated value"}</span>
-              <span className="px-2 py-0.5 rounded-full bg-secondary-fixed text-label-sm text-on-secondary-fixed">7-day price lock</span>
+              <span className="px-2 py-0.5 rounded-full bg-surface-container text-label-sm text-on-surface-variant">7-day price lock</span>
             </div>
             <div className="flex items-baseline gap-2">
               <span className="font-display text-[40px] leading-none font-extrabold text-primary tnum">{formatINR(quote?.total ?? maxPrice)}</span>

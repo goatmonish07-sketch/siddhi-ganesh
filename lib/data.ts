@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { BRANDS, CONDITION_QUESTIONS, MODELS, PRODUCTS, REPAIR_SERVICES } from "./catalog";
+import { localImage } from "./images";
 import { publicClient } from "./supabase/server";
 import type { Brand, ConditionQuestion, PhoneModel, Product, RepairService } from "./types";
 
@@ -35,16 +36,20 @@ interface ModelRow {
   name: string;
   year: number;
   tier: PhoneModel["tier"];
+  image_url: string | null;
   variants: { label: string; base_price: number; sort: number }[];
 }
 
+const withModelImages = (models: PhoneModel[]) => models.map((m) => ({ ...m, imageUrl: m.imageUrl || localImage("phones", m.slug) }));
+const withProductImages = (products: Product[]) => products.map((p) => ({ ...p, imageUrl: p.imageUrl || localImage("products", p.id) }));
+
 export const getModels = cache(
-  (): Promise<PhoneModel[]> =>
-    load("models", MODELS, async (db) => {
+  async (): Promise<PhoneModel[]> =>
+    withModelImages(await load("models", MODELS, async (db) => {
       const rows = must<ModelRow[]>(
         await db
           .from("models")
-          .select("slug, brand_slug, name, year, tier, variants(label, base_price, sort)")
+          .select("slug, brand_slug, name, year, tier, image_url, variants(label, base_price, sort)")
           .eq("is_active", true)
           .order("year", { ascending: false }),
       );
@@ -54,9 +59,10 @@ export const getModels = cache(
         name: r.name,
         year: r.year,
         tier: r.tier,
+        imageUrl: r.image_url,
         variants: [...r.variants].sort((a, b) => a.sort - b.sort).map((v) => ({ label: v.label, basePrice: v.base_price })),
       }));
-    }),
+    })),
 );
 
 export async function getModelsForBrand(brandSlug: string): Promise<PhoneModel[]> {
@@ -151,8 +157,8 @@ interface ProductRow {
 }
 
 export const getProducts = cache(
-  (): Promise<Product[]> =>
-    load("products", PRODUCTS, async (db) => {
+  async (): Promise<Product[]> =>
+    withProductImages(await load("products", PRODUCTS, async (db) => {
       const rows = must<ProductRow[]>(
         await db.from("products").select("*").neq("status", "sold").order("created_at", { ascending: false }),
       );
@@ -174,7 +180,7 @@ export const getProducts = cache(
         tint: r.tint,
         status: r.status,
       }));
-    }),
+    })),
 );
 
 export async function getProduct(id: string): Promise<Product | undefined> {

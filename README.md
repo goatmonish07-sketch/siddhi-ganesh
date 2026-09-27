@@ -55,14 +55,27 @@ To change the bundled defaults instead, edit `lib/catalog.ts` and run `npm run s
 
 Import the GitHub repo in Vercel, add the environment variables above plus `NEXT_PUBLIC_SITE_URL` (your domain), and deploy.
 
-## Deploy as a static site (Cloudflare Pages direct upload)
+## Deploy on Cloudflare Pages
 
-```bash
-npm run build:static   # writes plain HTML to out/
-```
+**From GitHub (auto-deploys on every push):** Workers & Pages → your project → Settings → Builds:
 
-Upload the `out/` folder (or a zip of it) in Cloudflare → Workers & Pages → Create → Pages → Upload assets.
-In this mode there is no server, so bookings get their ID in the browser and go straight to WhatsApp, and the Track page asks customers to check status on WhatsApp. Prices come from `lib/catalog.ts` at build time, so rebuild and re-upload after changing them.
+| Setting | Value |
+|---|---|
+| Framework preset | `None` (or "Next.js (Static HTML Export)") |
+| Build command | `npm run build:static` |
+| Build output directory | `out` |
+| Production branch | `claude/upbeat-hawking-t6qmu2` (or `main` once merged) |
+
+Cloudflare sets `CF_PAGES=1`, which also switches the build to static export automatically, and `.node-version` pins Node 22. Don't use the plain "Next.js" preset (next-on-pages): this site is exported as static HTML.
+
+**Direct upload:** run `npm run build:static` and upload the `out/` folder.
+
+In static mode there is no server: bookings get their ID in the browser and go straight to WhatsApp, and the Track page asks customers to check status on WhatsApp. Prices come from `lib/catalog.ts` at build time.
+
+## Images
+- Phone photos: `public/phones/<model-slug>.webp` (e.g. `iphone-13.webp`) — shown on sell pages automatically.
+- Second-hand stock photos: `public/products/<listing-id>.webp` (e.g. `ssg-101.webp`).
+- Banner photos live in `public/images/`.
 
 ## Phase 2 ideas
 Admin panel at `/admin` (edit prices/stock and manage bookings without Supabase), customer OTP login, Razorpay advance payments, Tamil language, automatic WhatsApp Business notifications, reviews, and exchange offers.

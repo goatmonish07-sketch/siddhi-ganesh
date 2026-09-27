@@ -173,7 +173,7 @@ export function RepairBooking({
                     <Icon name={active ? "check_circle" : "radio_button_unchecked"} fill={active} className={active ? "text-primary" : "text-outline-variant"} />
                   </div>
                   <div className="flex items-end justify-between">
-                    <span className="px-2 py-0.5 rounded bg-secondary-fixed/60 text-label-sm text-on-secondary-fixed">{s.badge}</span>
+                    <span className="px-2 py-0.5 rounded bg-surface-container text-label-sm text-on-surface-variant">{s.badge}</span>
                     <span className="text-right">
                       <span className="block text-body-sm text-on-surface-variant">{price === null ? "Diagnosis" : model ? "Estimated" : "From"}</span>
                       <span className="text-label-lg text-primary tnum">{price === null ? "After inspection" : formatINR(price)}</span>
@@ -188,7 +188,7 @@ export function RepairBooking({
             <textarea id="r-notes" rows={2} className={inputCls} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="e.g. fell in water yesterday, screen flickers" />
           </div>
           <div className="mt-4 rounded-xl bg-surface-container p-3 flex gap-2 text-body-sm text-primary">
-            <Icon name="verified_user" className="text-gold-ink" />
+            <Icon name="verified_user" className="text-secondary" />
             <span>
               <strong>Free initial diagnosis.</strong> We inspect your phone in front of you. If you choose not to repair, you pay nothing.
             </span>
@@ -224,13 +224,13 @@ export function RepairBooking({
           ) : (
             <p className="text-body-sm text-on-surface-variant">No issue selected yet.</p>
           )}
-          <div className="rounded-xl bg-primary-container text-white p-4 flex items-center justify-between">
+          <div className="rounded-xl bg-surface-container-low border border-hairline p-4 flex items-center justify-between">
             <div>
-              <div className="text-body-sm text-primary-fixed-dim">Estimated time</div>
+              <div className="text-body-sm text-muted">Estimated time</div>
               <div className="text-label-lg">{minutes ? formatDuration(minutes) : "—"}</div>
             </div>
             <div className="text-right">
-              <div className="text-body-sm text-primary-fixed-dim">Pay after repair</div>
+              <div className="text-body-sm text-muted">Pay after repair</div>
               <div className="font-display text-headline-md tnum">
                 {barValue}
               </div>

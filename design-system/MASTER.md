@@ -9,19 +9,20 @@ Visual origin: Stitch export "Heritage Emerald Tech" (`design/stitch/`). Tokens 
 - Desktop: top nav + sticky summary sidebar in flows.
 
 ## 2. Style
-**Warm Modernism / Soft UI.** White cards on a mint canvas, hairline borders, low olive-tinted shadows, 16px card radius, pill chips. No glassmorphism, no neon, no gradients except the dark-green hero bands.
+**Premium minimal, Cashify-inspired (v2).** White canvas, light-grey (#F5F5F7) photo backdrops, hairline borders, near-black type and a *single* emerald accent for primary buttons and selected states. Real product photography (`public/images/`, `components/Photo.tsx`) and monochrome brand logos (`components/BrandLogo.tsx`). No mint tints, yellow chips, gradients or decorative blobs. Gold appears only in the logo and the Grade Superb badge.
 
 ## 3. Colours (all text pairs verified ≥ 4.5:1)
 | Role | Token | Hex | On |
 |---|---|---|---|
 | Brand / primary CTA | `primary-container` | #163A24 | white text 12.6:1 |
 | Deepest green (hover) | `primary` | #002410 | |
-| Canvas | `surface` | #E9FEF1 | |
+| Canvas | `surface` | #FFFFFF | alt sections `surface-container-low` #F7F7F8 |
 | Card | `surface-container-lowest` | #FFFFFF | border `hairline` #E5DFD5 |
-| Body text | `on-surface` | #0D1F17 | |
-| Secondary text | `on-surface-variant` | #424842 | 9.4:1 on white |
-| Muted / struck MRP | `muted` | #5C635C | ≥ 5.9:1 on white |
-| Eyebrow / accent text | `secondary` | #775A00 | 6.5:1 |
+| Body text / headings | `on-surface` (= `primary`) | #111827 | |
+| Photo backdrop | `canvas` | #F5F5F7 | |
+| Secondary text | `on-surface-variant` | #4B5563 | 7.6:1 on white |
+| Muted / struck MRP | `muted` | #6B7280 | 4.8:1 on white |
+| Accent text / links | `secondary` | #1F5135 | 9.6:1 |
 | Gold on dark | `gold` | #D4AF37 | 6.0:1 on brand green |
 | Gold icons on light | `gold-ink` | #8A6D00 | 4.9:1 |
 | Light text on dark green | `primary-fixed-dim` | #A8D0B1 | 7.4:1 |
@@ -60,3 +61,8 @@ Fixed elements: mobile tab bar 64px + safe-area inset; body reserves that space.
 - [ ] No horizontal scroll at 375 / 768 / 1024 / 1440
 - [ ] Fixed bars never cover content (body padding / scroll-margin)
 - [ ] Reduced motion respected
+
+## Images
+- Banner photos: `public/images/<name>.webp` (+ `-640` variant), rendered by `<Photo name=…>` with srcset. Source: Stitch exports.
+- Phone model photos: drop `public/phones/<model-slug>.webp`; listing photos: `public/products/<id>.webp`. Picked up automatically at build (`lib/images.ts`); otherwise `PhoneArt` renders a device.
+- Never use a stock/banner photo as the photo of a specific second-hand listing.

@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "seed:generate": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-seed.mts",
-    "build:static": "node scripts/build-static.mjs"
+    "build:static": "STATIC_EXPORT=1 next build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",
@@ -28,5 +28,8 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "vitest": "^5.0.2"
+  },
+  "engines": {
+    "node": ">=20.9"
   }
 }

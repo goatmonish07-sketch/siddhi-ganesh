@@ -24,23 +24,21 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
-      <div className="hidden sm:block bg-primary-container text-primary-fixed-dim py-1 px-4 lg:px-8">
+      <div className="hidden sm:block bg-surface-container-low border-b border-hairline text-on-surface-variant py-1.5 px-4 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 text-label-sm">
           <div className="flex items-center gap-4">
-            <a href={`tel:+91${SHOP.phone}`} className="flex items-center gap-1 text-white tracking-wider">
-              <Icon name="call" className="text-[14px] text-secondary-container" />
+            <a href={`tel:+91${SHOP.phone}`} className="flex items-center gap-1 text-on-surface">
+              <Icon name="call" className="text-[14px] text-muted" />
               {SHOP.phone}
             </a>
             <span className="hidden md:flex items-center gap-1">
-              <Icon name="location_on" className="text-[14px] text-secondary-container" />
+              <Icon name="location_on" className="text-[14px] text-muted" />
               {SHOP.street}, {SHOP.city} {SHOP.pincode}
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="hidden lg:inline-block bg-primary px-2 py-0.5 rounded-full text-secondary-fixed uppercase tracking-wider">
-              Cheyyar&apos;s most trusted mobile hub
-            </span>
-            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 whitespace-nowrap text-secondary-fixed hover:text-white">
+            <span className="hidden lg:inline-block">Open daily · 9:30 AM – 9:30 PM</span>
+            <a href={waLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 whitespace-nowrap text-on-surface hover:text-secondary">
               <Icon name="chat" className="text-[14px]" />
               Direct WhatsApp
             </a>
@@ -48,7 +46,7 @@ export function Header() {
         </div>
       </div>
 
-      <div className="bg-surface/90 backdrop-blur-xl">
+      <div className="bg-white/90 backdrop-blur-xl border-b border-hairline">
         <div className="h-16 sm:h-18 max-w-7xl mx-auto px-4 lg:px-8 flex items-center justify-between gap-3">
           <Logo />
           <nav className="hidden xl:flex items-center gap-1" aria-label="Main">
@@ -58,7 +56,7 @@ export function Header() {
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={`inline-flex items-center min-h-11 px-3 rounded-lg text-label-lg transition-colors ${
-                  isActive(item.href) ? "bg-primary-container text-white" : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container"
+                  isActive(item.href) ? "text-on-surface bg-surface-container" : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low"
                 }`}
               >
                 {item.label}
@@ -66,7 +64,7 @@ export function Header() {
             ))}
           </nav>
           <div className="flex items-center gap-2">
-            <Link href="/repair" className="hidden md:inline-flex items-center min-h-11 px-4 rounded-lg bg-surface-container-low text-primary text-label-lg hover:bg-secondary-fixed transition-colors">
+            <Link href="/repair" className="hidden md:inline-flex items-center min-h-11 px-4 rounded-lg border border-hairline text-on-surface text-label-lg hover:bg-surface-container-low transition-colors">
               Book Repair
             </Link>
             <a
@@ -76,7 +74,7 @@ export function Header() {
             >
               <Icon name="call" />
             </a>
-            <Link href="/sell" className="hidden sm:inline-flex items-center min-h-11 px-4 rounded-lg bg-primary-container text-white text-label-lg hover:bg-primary hover:text-secondary-fixed transition-colors shadow-[0_2px_8px_rgba(22,58,36,0.12)] whitespace-nowrap">
+            <Link href="/sell" className="hidden sm:inline-flex items-center min-h-11 px-4 rounded-lg bg-primary-container text-white text-label-lg hover:bg-primary transition-colors whitespace-nowrap">
               Sell Old Phone
             </Link>
             <button

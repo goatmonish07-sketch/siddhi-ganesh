@@ -5,6 +5,7 @@ import { useState } from "react";
 import { formatINR } from "@/lib/shop";
 import { Icon } from "./Icon";
 import { inputCls } from "./booking";
+import { BRAND_TINT, DeviceImage } from "./DeviceImage";
 
 export interface ModelLink {
   href: string;
@@ -12,6 +13,8 @@ export interface ModelLink {
   brand: string;
   maxPrice: number;
   year: number;
+  brandSlug: string;
+  imageUrl?: string | null;
 }
 
 export function ModelList({ models, placeholder = "Search your model, e.g. iPhone 13, Galaxy A55…", priceLabel = "Sell up to" }: { models: ModelLink[]; placeholder?: string; priceLabel?: string }) {
@@ -32,10 +35,13 @@ export function ModelList({ models, placeholder = "Search your model, e.g. iPhon
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {shown.map((m) => (
-            <Link key={m.href} href={m.href} className="rounded-xl bg-white border border-hairline p-4 shadow-card hover:shadow-lift hover:ring-2 hover:ring-primary-container transition">
-              <div className="text-body-sm text-on-surface-variant">{m.brand} · {m.year}</div>
-              <div className="text-label-lg text-primary mt-0.5">{m.name}</div>
-              <div className="text-body-sm text-secondary mt-2 tnum">{priceLabel} {formatINR(m.maxPrice)}</div>
+            <Link key={m.href} href={m.href} className="group flex flex-col rounded-xl bg-white border border-hairline p-3 transition hover:shadow-lift hover:border-transparent">
+              <div className="grid place-items-center rounded-lg bg-canvas h-32 sm:h-36 p-2">
+                <DeviceImage src={m.imageUrl} alt={`${m.brand} ${m.name}`} tint={BRAND_TINT[m.brandSlug]} cameras={m.brandSlug === "apple" ? 2 : 3} className="h-full w-full" />
+              </div>
+              <div className="pt-3 text-label-lg text-on-surface">{m.name}</div>
+              <div className="text-body-sm text-muted">{m.brand} · {m.year}</div>
+              <div className="mt-auto pt-2 text-body-sm text-on-surface tnum">{priceLabel} <strong>{formatINR(m.maxPrice)}</strong></div>
             </Link>
           ))}
         </div>
