@@ -6,14 +6,15 @@ import type { ConditionQuestion, PhoneModel } from "@/lib/types";
 import { computeQuote, optionImpact, type Answers } from "@/lib/pricing";
 import { formatINR } from "@/lib/shop";
 import { sellMessage, waLink } from "@/lib/whatsapp";
-import { ContactFields, SuccessPanel, contactError, contactPayload, emptyContact, useSubmitRequest } from "./booking";
+import { ContactFields, SuccessPanel, contactError, contactPayload, emptyContact, Spinner, useSubmitRequest } from "./booking";
 import { Icon } from "./Icon";
+import { MobileActionBar } from "./MobileActionBar";
 import { PhoneArt } from "./PhoneArt";
 
 function Impact({ value }: { value: number }) {
   if (value === 0) return <span className="text-label-md text-on-surface-variant tnum">₹0</span>;
   return (
-    <span className={`text-label-md tnum ${value < 0 ? "text-error" : "text-on-tertiary-container"}`}>
+    <span className={`text-label-md tnum ${value < 0 ? "text-error" : "text-success"}`}>
       {value < 0 ? "−" : "+"}
       {formatINR(Math.abs(value))}
     </span>
@@ -68,28 +69,36 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
   }
 
   const steps = [
-    { label: "Brand", value: brandName, done: true },
-    { label: "Model", value: model.name, done: true },
-    { label: "Variant", value: variant?.label ?? "Choose", done: !!variant },
-    { label: "Condition quiz", value: `${answeredCount}/${questions.length}`, done: !!quote?.complete },
-    { label: "Cash & payout", value: result ? "Booked" : "Pending", done: !!result },
+    { label: "Brand", short: "Brand", value: brandName, done: true },
+    { label: "Model", short: "Model", value: model.name, done: true },
+    { label: "Variant", short: "Storage", value: variant?.label ?? "Choose", done: !!variant },
+    { label: "Condition quiz", short: "Quiz", value: `${answeredCount}/${questions.length}`, done: !!quote?.complete },
+    { label: "Cash & payout", short: "Book", value: result ? "Booked" : "Pending", done: !!result },
   ];
   const progress = steps.filter((s) => s.done).length / steps.length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-20 lg:pb-0">
+      {!result && (
+        <MobileActionBar
+          label={quote?.complete ? "Your buyback value" : variant ? `Estimate · ${answeredCount}/${questions.length} answered` : "Sell up to"}
+          value={formatINR(quote?.total ?? maxPrice)}
+          cta={quote?.complete ? "Book" : "Summary"}
+          target="booking"
+        />
+      )}
       {/* Stepper */}
       <div className="rounded-2xl bg-white border border-hairline p-3 shadow-card">
         <ol className="grid grid-cols-5 gap-1 sm:gap-2">
           {steps.map((s, i) => (
-            <li key={s.label} className={`rounded-lg p-2 ${s.done ? "bg-surface-container" : "bg-surface-container-low"}`}>
+            <li key={s.label} aria-current={!s.done && steps.slice(0, i).every((x) => x.done) ? "step" : undefined} className={`rounded-lg p-1.5 sm:p-2 ${s.done ? "bg-surface-container" : "bg-surface-container-low"}`}>
               <div className="flex items-center gap-1.5">
                 <span className={`grid place-items-center w-5 h-5 rounded-full text-label-sm shrink-0 ${s.done ? "bg-primary-container text-white" : "bg-white text-on-surface-variant border border-hairline"}`}>
                   {s.done ? <Icon name="check" className="text-[14px]" /> : i + 1}
                 </span>
                 <span className="hidden sm:block text-label-sm uppercase text-on-surface-variant">Step {i + 1}</span>
               </div>
-              <div className="text-label-md text-primary mt-1 truncate">{s.label}</div>
+              <div className="text-label-md text-primary mt-1 truncate"><span className="sm:hidden">{s.short}</span><span className="hidden sm:inline">{s.label}</span></div>
               <div className="hidden sm:block text-body-sm text-on-surface-variant truncate">{s.value}</div>
             </li>
           ))}
@@ -113,7 +122,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
                     <h1 className="text-headline-md text-primary">{brandName} {model.name}</h1>
                     <p className="text-body-sm text-on-surface-variant">Launched {model.year}</p>
                   </div>
-                  <Link href={`/sell/${model.brandSlug}`} className="inline-flex items-center gap-1 rounded-lg bg-surface-container px-3 py-1.5 text-label-md text-primary">
+                  <Link href={`/sell/${model.brandSlug}`} className="inline-flex items-center min-h-11 gap-1 rounded-lg bg-surface-container px-3 text-label-md text-primary">
                     <Icon name="swap_horiz" className="text-[16px]" /> Change model
                   </Link>
                 </div>
@@ -166,7 +175,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
                         role={q.kind === "single" ? "radio" : "checkbox"}
                         aria-checked={active}
                         onClick={() => pick(q, o.key)}
-                        className={`min-h-12 text-left rounded-xl border p-3 flex items-start gap-3 transition ${
+                        className={`min-h-14 text-left rounded-xl border p-3 flex items-start gap-3 transition-colors duration-150 ${
                           active ? "border-primary-container ring-2 ring-primary-container bg-[#f1f6f3]" : "border-hairline hover:bg-surface-container-low"
                         }`}
                       >
@@ -187,7 +196,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
 
         {/* Summary + booking */}
         <aside className="lg:sticky lg:top-32 space-y-4">
-          <form onSubmit={onSubmit} className="rounded-2xl bg-white border border-hairline p-5 shadow-lift space-y-4">
+          <form id="booking" onSubmit={onSubmit} className="rounded-2xl bg-white border border-hairline p-5 shadow-lift space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-label-sm uppercase tracking-widest text-secondary">{quote?.complete ? "Your buyback value" : "Estimated value"}</span>
               <span className="px-2 py-0.5 rounded-full bg-secondary-fixed text-label-sm text-on-secondary-fixed">7-day price lock</span>
@@ -202,7 +211,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
                 {quote.lines.map((l) => (
                   <div key={l.label} className="flex justify-between gap-2">
                     <dt className="text-on-surface-variant">{l.label}</dt>
-                    <dd className={l.amount < 0 ? "text-error" : "text-on-tertiary-container"}>{l.amount < 0 ? "−" : "+"}{formatINR(Math.abs(l.amount))}</dd>
+                    <dd className={l.amount < 0 ? "text-error" : "text-success"}>{l.amount < 0 ? "−" : "+"}{formatINR(Math.abs(l.amount))}</dd>
                   </div>
                 ))}
                 <div className="flex justify-between border-t border-hairline pt-1.5 text-label-lg text-primary"><dt>Offer (rounded)</dt><dd>{formatINR(quote.total)}</dd></div>
@@ -226,7 +235,7 @@ export function SellQuote({ brandName, model, questions }: { brandName: string; 
                   disabled={pending || !quote?.complete}
                   className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary-container py-3 text-white text-label-lg hover:bg-primary disabled:opacity-50"
                 >
-                  <Icon name="lock" className="text-[18px]" />
+                  {pending ? <Spinner /> : <Icon name="lock" className="text-[18px]" />}
                   {pending ? "Locking…" : "Lock quote & book"}
                 </button>
                 <p className="text-body-sm text-on-surface-variant text-center">Final price confirmed after a 5-minute check at pickup/shop.</p>

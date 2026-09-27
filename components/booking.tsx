@@ -19,7 +19,7 @@ export const emptyContact: ContactState = { name: "", phone: "", mode: "shop", a
 const DAYS = ["Today", "Tomorrow", "Day after tomorrow"];
 
 export const inputCls =
-  "w-full rounded-lg border border-hairline bg-surface-container-low px-3 py-2.5 text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container";
+  "w-full rounded-lg border border-hairline bg-surface-container-low px-3 py-2.5 text-body-md text-on-surface placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary-container";
 export const labelCls = "block text-label-md text-on-surface-variant mb-1";
 
 export function ContactFields({
@@ -37,13 +37,13 @@ export function ContactFields({
   return (
     <div className="space-y-3">
       <div>
-        <label className={labelCls} htmlFor="c-name">Your full name</label>
+        <label className={labelCls} htmlFor="c-name">Your full name <span aria-hidden="true" className="text-error">*</span></label>
         <input id="c-name" className={inputCls} value={value.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Selva Kumar" autoComplete="name" required />
       </div>
       <div>
-        <label className={labelCls} htmlFor="c-phone">Mobile number (WhatsApp)</label>
+        <label className={labelCls} htmlFor="c-phone">Mobile number (WhatsApp) <span aria-hidden="true" className="text-error">*</span></label>
         <div className="flex">
-          <span className="rounded-l-lg border border-r-0 border-hairline bg-surface-container px-3 py-2.5 text-body-md text-on-surface-variant">+91</span>
+          <span className="grid place-items-center rounded-l-lg border border-r-0 border-hairline bg-surface-container px-3 text-base sm:text-body-md text-on-surface-variant">+91</span>
           <input
             id="c-phone"
             className={`${inputCls} rounded-l-none`}
@@ -68,7 +68,7 @@ export function ContactFields({
                   role="radio"
                   aria-checked={value.mode === m}
                   onClick={() => set("mode", m)}
-                  className={`rounded-md px-2 py-2 text-label-md ${value.mode === m ? "bg-primary-container text-white" : "text-primary hover:bg-surface-container-high"}`}
+                  className={`min-h-11 rounded-md px-2 py-2 text-label-md transition-colors ${value.mode === m ? "bg-primary-container text-white" : "text-primary hover:bg-surface-container-high"}`}
                 >
                   {m === "shop" ? "Shop visit" : pickupLabel}
                 </button>
@@ -77,7 +77,7 @@ export function ContactFields({
           </div>
           {value.mode === "pickup" && (
             <div>
-              <label className={labelCls} htmlFor="c-address">Pickup address</label>
+              <label className={labelCls} htmlFor="c-address">Pickup address <span aria-hidden="true" className="text-error">*</span></label>
               <textarea id="c-address" rows={2} className={inputCls} value={value.address} onChange={(e) => set("address", e.target.value)} placeholder="Door no, street, area, Cheyyar" required />
             </div>
           )}
@@ -150,10 +150,14 @@ export function useSubmitRequest() {
   return { submit, pending, error, setError, result };
 }
 
+export function Spinner() {
+  return <Icon name="progress" className="text-[18px] animate-spin" />;
+}
+
 export function SuccessPanel({ id, whatsappUrl, title }: { id: string; whatsappUrl: string; title: string }) {
   return (
     <div className="rounded-xl bg-surface-container p-4 space-y-3 text-center" role="status">
-      <Icon name="task_alt" className="text-[40px] text-on-tertiary-container" />
+      <Icon name="task_alt" className="text-[40px] text-success" />
       <div className="font-display text-headline-sm text-primary">{title}</div>
       <p className="text-body-sm text-on-surface-variant">
         Your request ID is <strong className="text-primary tnum">{id}</strong>. Tap below to send the details to us on WhatsApp so we can confirm right away.
@@ -162,7 +166,7 @@ export function SuccessPanel({ id, whatsappUrl, title }: { id: string; whatsappU
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2 rounded-lg bg-whatsapp py-3 text-white text-label-lg hover:brightness-95"
+        className="flex items-center justify-center gap-2 rounded-lg bg-whatsapp py-3 text-on-surface text-label-lg hover:brightness-95"
       >
         <Icon name="chat" fill /> Send on WhatsApp
       </a>

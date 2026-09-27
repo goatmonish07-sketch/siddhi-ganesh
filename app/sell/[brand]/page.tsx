@@ -23,7 +23,7 @@ export default async function BrandPage({ params }: Props) {
   return (
     <Container className="py-10">
       <nav className="text-body-sm text-on-surface-variant mb-4">
-        <Link href="/sell" className="underline">Sell phone</Link> / {b.name}
+        <Link href="/sell" className="inline-flex items-center min-h-11 underline underline-offset-2">Sell phone</Link> / {b.name}
       </nav>
       <SectionHeading eyebrow="Sell old phone · Step 2" title={`Select your ${b.name} model`} sub={`${models.length} models available for instant quote.`} />
       <ModelList

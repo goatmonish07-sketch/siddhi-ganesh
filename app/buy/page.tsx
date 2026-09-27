@@ -46,7 +46,7 @@ export default async function BuyPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {PERKS.map((p) => (
               <div key={p.title} className="rounded-xl bg-white/70 border border-hairline p-3 flex gap-2 items-start">
-                <Icon name={p.icon} className="text-gold-deep" />
+                <Icon name={p.icon} className="text-gold-ink" />
                 <div>
                   <div className="text-label-md text-primary">{p.title}</div>
                   <div className="text-body-sm text-on-surface-variant">{p.sub}</div>
@@ -61,7 +61,7 @@ export default async function BuyPage() {
         <BuyListing products={products} brands={brands} />
       </Container>
 
-      <section className="py-12 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <Container>
           <SectionHeading eyebrow="Our quality protocol" title="Understanding our grades" sub="Every phone passes a 32-point diagnostic check before it's listed." />
           <div className="grid md:grid-cols-3 gap-4">
@@ -71,7 +71,7 @@ export default async function BuyPage() {
                 <h3 className="text-headline-sm text-primary mt-1">{GRADE_INFO[g].title}</h3>
                 <ul className="mt-3 space-y-1.5 text-body-md text-on-surface-variant">
                   {GRADE_INFO[g].points.map((p) => (
-                    <li key={p} className="flex gap-2"><Icon name="check" className="text-[18px] text-on-tertiary-container" />{p}</li>
+                    <li key={p} className="flex gap-2"><Icon name="check" className="text-[18px] text-success" />{p}</li>
                   ))}
                 </ul>
                 <div className="mt-3 text-label-md text-primary">{GRADE_INFO[g].warranty}</div>
@@ -81,11 +81,11 @@ export default async function BuyPage() {
         </Container>
       </section>
 
-      <Container className="py-12">
+      <Container className="py-12 lg:py-16">
         <div className="rounded-3xl bg-gradient-to-br from-primary-container to-primary text-white p-8 grid md:grid-cols-[1fr_auto] gap-6 items-center">
           <div>
             <h2 className="text-[24px] sm:text-headline-lg font-bold">Test in person before paying a single rupee</h2>
-            <p className="text-body-md text-on-primary-container mt-2 max-w-2xl">
+            <p className="text-body-md text-primary-fixed-dim mt-2 max-w-2xl">
               Visit {SHOP.street}, {SHOP.city}. Insert your own SIM, test the cameras, check the battery and verify the IMEI at our counter before you pay.
             </p>
           </div>

@@ -38,7 +38,7 @@ export default async function SellModelPage({ params }: Props) {
     <>
       <Container className="py-8">
         <nav className="text-body-sm text-on-surface-variant mb-4">
-          <Link href="/sell" className="underline">Sell phone</Link> / <Link href={`/sell/${brand}`} className="underline">{brandName}</Link> / {m.name}
+          <Link href="/sell" className="inline-flex items-center min-h-11 underline underline-offset-2">Sell phone</Link> / <Link href={`/sell/${brand}`} className="inline-flex items-center min-h-11 underline underline-offset-2">{brandName}</Link> / {m.name}
         </nav>
         <SellQuote brandName={brandName} model={m} questions={questions} />
       </Container>

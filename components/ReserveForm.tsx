@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Product } from "@/lib/types";
 import { buyMessage, waLink } from "@/lib/whatsapp";
-import { ContactFields, SuccessPanel, contactError, emptyContact, inputCls, labelCls, useSubmitRequest } from "./booking";
+import { ContactFields, SuccessPanel, contactError, emptyContact, inputCls, labelCls, Spinner, useSubmitRequest } from "./booking";
 import { Icon } from "./Icon";
 
 export function ReserveForm({ product }: { product: Product }) {
@@ -43,7 +43,7 @@ export function ReserveForm({ product }: { product: Product }) {
       </div>
       {error && <p className="text-body-sm text-error" role="alert">{error}</p>}
       <button disabled={pending} className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary-container py-3 text-white text-label-lg hover:bg-primary disabled:opacity-50">
-        <Icon name="bookmark_added" className="text-[18px]" /> {pending ? "Reserving…" : "Reserve & pay at shop"}
+        {pending ? <Spinner /> : <Icon name="bookmark_added" className="text-[18px]" />} {pending ? "Reserving…" : "Reserve & pay at shop"}
       </button>
       <p className="text-body-sm text-on-surface-variant text-center">No advance needed. We hold the phone for 24 hours.</p>
     </form>

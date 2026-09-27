@@ -20,7 +20,7 @@ export function VisitShop() {
           <div>
             <div className="text-label-sm uppercase tracking-widest text-gold">Physical store visit</div>
             <h2 className="text-headline-lg text-[26px] sm:text-[32px] font-bold mt-1">Walk into our Cheyyar shop</h2>
-            <p className="text-body-md text-on-primary-container mt-2">
+            <p className="text-body-md text-primary-fixed-dim mt-2">
               Meet {SHOP.owner} and our repair technicians in person. Test phones, watch your repair on the bench and get paid on the spot.
             </p>
           </div>

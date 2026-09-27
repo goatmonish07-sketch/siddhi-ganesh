@@ -5,8 +5,9 @@ import type { Brand, PhoneModel, RepairService } from "@/lib/types";
 import { formatDuration, repairEstimate, repairPrice, startingPrice } from "@/lib/repair";
 import { formatINR } from "@/lib/shop";
 import { repairMessage, waLink } from "@/lib/whatsapp";
-import { ContactFields, SuccessPanel, contactError, contactPayload, emptyContact, inputCls, labelCls, useSubmitRequest } from "./booking";
+import { ContactFields, SuccessPanel, contactError, contactPayload, emptyContact, inputCls, labelCls, Spinner, useSubmitRequest } from "./booking";
 import { Icon } from "./Icon";
+import { MobileActionBar } from "./MobileActionBar";
 
 const OTHER = "__other";
 
@@ -75,8 +76,24 @@ export function RepairBooking({
     }
   }
 
+  const barValue = estimateTotal
+    ? formatINR(estimateTotal)
+    : pickedServices.length
+      ? estimate?.total
+        ? `${formatINR(estimate.total)}+`
+        : "On inspection"
+      : "₹0";
+
   return (
-    <div className="grid lg:grid-cols-[1fr_380px] gap-6 items-start">
+    <div className="grid lg:grid-cols-[1fr_380px] gap-6 items-start pb-20 lg:pb-0">
+      {!result && (
+        <MobileActionBar
+          label={pickedServices.length ? `${pickedServices.length} issue${pickedServices.length > 1 ? "s" : ""} · pay after repair` : "Select an issue"}
+          value={barValue}
+          cta="Book"
+          target="booking"
+        />
+      )}
       <div className="space-y-6">
         <section className="rounded-2xl bg-white border border-hairline p-5 shadow-card">
           <h2 className="flex items-center gap-2 text-headline-sm text-primary mb-3">
@@ -91,7 +108,7 @@ export function RepairBooking({
                 role="radio"
                 aria-checked={brandSlug === b.slug}
                 onClick={() => chooseBrand(b.slug)}
-                className={`min-h-10 rounded-full px-4 py-1.5 text-label-md border ${
+                className={`min-h-11 rounded-full px-4 py-2 text-label-md border transition-colors ${
                   brandSlug === b.slug ? "bg-primary-container text-white border-primary-container" : "bg-white border-hairline text-primary hover:border-primary-container"
                 }`}
               >
@@ -137,7 +154,7 @@ export function RepairBooking({
                   role="checkbox"
                   aria-checked={active}
                   onClick={() => toggle(s.key)}
-                  className={`text-left rounded-xl border p-4 transition flex flex-col gap-2 ${
+                  className={`text-left rounded-xl border p-4 transition-colors duration-150 flex flex-col gap-2 ${
                     active ? "border-primary-container ring-2 ring-primary-container bg-[#f1f6f3]" : "border-hairline hover:bg-surface-container-low"
                   }`}
                 >
@@ -167,7 +184,7 @@ export function RepairBooking({
             <textarea id="r-notes" rows={2} className={inputCls} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="e.g. fell in water yesterday, screen flickers" />
           </div>
           <div className="mt-4 rounded-xl bg-surface-container p-3 flex gap-2 text-body-sm text-primary">
-            <Icon name="verified_user" className="text-gold-deep" />
+            <Icon name="verified_user" className="text-gold-ink" />
             <span>
               <strong>Free initial diagnosis.</strong> We inspect your phone in front of you. If you choose not to repair, you pay nothing.
             </span>
@@ -176,7 +193,7 @@ export function RepairBooking({
       </div>
 
       <aside className="lg:sticky lg:top-32">
-        <form onSubmit={onSubmit} className="rounded-2xl bg-white border border-hairline p-5 shadow-lift space-y-4">
+        <form id="booking" onSubmit={onSubmit} className="rounded-2xl bg-white border border-hairline p-5 shadow-lift space-y-4">
           <div>
             <div className="text-label-sm uppercase tracking-widest text-secondary">Direct shop valuation</div>
             <div className="text-headline-sm text-primary">Booking summary</div>
@@ -194,7 +211,7 @@ export function RepairBooking({
                 const p = model ? repairPrice(s, model.tier) : null;
                 return (
                   <li key={s.key} className="flex justify-between gap-2">
-                    <span className="flex items-center gap-1"><Icon name="check_circle" className="text-[14px] text-on-tertiary-container" /> {s.name}</span>
+                    <span className="flex items-center gap-1"><Icon name="check_circle" className="text-[14px] text-success" /> {s.name}</span>
                     <span>{p === null ? "On inspection" : formatINR(p)}</span>
                   </li>
                 );
@@ -205,13 +222,13 @@ export function RepairBooking({
           )}
           <div className="rounded-xl bg-primary-container text-white p-4 flex items-center justify-between">
             <div>
-              <div className="text-body-sm text-on-primary-container">Estimated time</div>
+              <div className="text-body-sm text-primary-fixed-dim">Estimated time</div>
               <div className="text-label-lg">{minutes ? formatDuration(minutes) : "—"}</div>
             </div>
             <div className="text-right">
-              <div className="text-body-sm text-on-primary-container">Pay after repair</div>
+              <div className="text-body-sm text-primary-fixed-dim">Pay after repair</div>
               <div className="font-display text-headline-md tnum">
-                {estimateTotal ? formatINR(estimateTotal) : pickedServices.length ? (estimate?.total ? `${formatINR(estimate.total)}+` : "On inspection") : "₹0"}
+                {barValue}
               </div>
             </div>
           </div>
@@ -223,7 +240,7 @@ export function RepairBooking({
               <ContactFields value={contact} onChange={setContact} />
               {error && <p className="text-body-sm text-error" role="alert">{error}</p>}
               <button disabled={pending} className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary-container py-3 text-white text-label-lg hover:bg-primary disabled:opacity-50">
-                <Icon name="build" className="text-[18px]" /> {pending ? "Booking…" : "Book repair"}
+                {pending ? <Spinner /> : <Icon name="build" className="text-[18px]" />} {pending ? "Booking…" : "Book repair"}
               </button>
               <p className="text-body-sm text-on-surface-variant text-center">Zero advance. Pay by cash or UPI after the repair.</p>
             </>

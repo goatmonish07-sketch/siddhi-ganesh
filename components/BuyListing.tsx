@@ -28,7 +28,7 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`min-h-9 rounded-full px-3 py-1 text-label-md border transition ${
+      className={`min-h-11 rounded-full px-4 py-2 text-label-md border transition ${
         active ? "bg-primary-container text-white border-primary-container" : "bg-white border-hairline text-primary hover:border-primary-container"
       }`}
     >
@@ -43,6 +43,8 @@ export function BuyListing({ products, brands }: { products: Product[]; brands: 
   const [budget, setBudget] = useState("any");
   const [grade, setGrade] = useState<Grade | "all">("all");
   const [sort, setSort] = useState<keyof typeof SORTS>("featured");
+  const [showFilters, setShowFilters] = useState(false);
+  const activeFilters = [brand !== "all", budget !== "any", grade !== "all"].filter(Boolean).length;
 
   const counts = useMemo(() => {
     const c: Record<string, number> = {};
@@ -70,7 +72,7 @@ export function BuyListing({ products, brands }: { products: Product[]; brands: 
             <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
             <input className={`${inputCls} pl-10`} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search model, storage, colour…" />
           </label>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-3">
             <label className="flex items-center gap-2 text-label-md text-on-surface-variant">
               Sort
               <select className={`${inputCls} w-auto py-2`} value={sort} onChange={(e) => setSort(e.target.value as keyof typeof SORTS)}>
@@ -82,8 +84,19 @@ export function BuyListing({ products, brands }: { products: Product[]; brands: 
             <span className="text-body-sm text-on-surface-variant whitespace-nowrap">{shown.length} phones</span>
           </div>
         </div>
+        <button
+          type="button"
+          className="lg:hidden w-full min-h-11 flex items-center justify-between rounded-lg bg-surface-container px-3 text-label-lg text-primary"
+          aria-expanded={showFilters}
+          aria-controls="buy-filters"
+          onClick={() => setShowFilters((v) => !v)}
+        >
+          <span>Filters{activeFilters ? ` (${activeFilters} active)` : ""}</span>
+          <Icon name="expand_more" className={`transition-transform ${showFilters ? "rotate-180" : ""}`} />
+        </button>
+        <div id="buy-filters" className={`space-y-4 ${showFilters ? "block" : "hidden lg:block"}`}>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-label-sm uppercase text-on-surface-variant w-16">Brands</span>
+          <span className="w-full sm:w-16 text-label-sm uppercase text-on-surface-variant">Brands</span>
           <Chip active={brand === "all"} onClick={() => setBrand("all")}>All brands</Chip>
           {brands.filter((b) => counts[b.slug]).map((b) => (
             <Chip key={b.slug} active={brand === b.slug} onClick={() => setBrand(b.slug)}>
@@ -92,22 +105,23 @@ export function BuyListing({ products, brands }: { products: Product[]; brands: 
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-label-sm uppercase text-on-surface-variant w-16">Budget</span>
+          <span className="w-full sm:w-16 text-label-sm uppercase text-on-surface-variant">Budget</span>
           {BUDGETS.map((b) => (
             <Chip key={b.key} active={budget === b.key} onClick={() => setBudget(b.key)}>{b.label}</Chip>
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-label-sm uppercase text-on-surface-variant w-16">Grade</span>
+          <span className="w-full sm:w-16 text-label-sm uppercase text-on-surface-variant">Grade</span>
           <Chip active={grade === "all"} onClick={() => setGrade("all")}>All grades</Chip>
           {(Object.keys(GRADE_INFO) as Grade[]).map((g) => (
             <Chip key={g} active={grade === g} onClick={() => setGrade(g)}>{GRADE_INFO[g].label}</Chip>
           ))}
         </div>
+        </div>
       </div>
 
       {shown.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {shown.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

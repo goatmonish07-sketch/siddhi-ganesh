@@ -41,7 +41,7 @@ export default function AboutPage() {
           <ul className="grid sm:grid-cols-2 gap-2">
             {SERVICES.map((s) => (
               <li key={s} className="flex gap-2 text-body-md text-on-surface">
-                <Icon name="check_circle" className="text-[18px] text-on-tertiary-container" /> {s}
+                <Icon name="check_circle" className="text-[18px] text-success" /> {s}
               </li>
             ))}
           </ul>

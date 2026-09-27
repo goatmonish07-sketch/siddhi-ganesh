@@ -12,7 +12,7 @@ export default function TrackPage() {
       <TrackForm />
       <p className="text-body-md text-on-surface-variant mt-6">
         Lost your ID?{" "}
-        <a className="underline text-primary" href={waLink("Hi, I need the status of my request.")} target="_blank" rel="noopener noreferrer">
+        <a className="inline-flex items-center min-h-11 underline text-primary" href={waLink("Hi, I need the status of my request.")} target="_blank" rel="noopener noreferrer">
           Ask us on WhatsApp
         </a>
         .

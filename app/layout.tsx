@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { TrustStrip } from "@/components/TrustStrip";
+import { MobileTabBar } from "@/components/MobileTabBar";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
 import { SHOP, siteUrl } from "@/lib/shop";
 
@@ -52,12 +53,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body>
+      <body className="min-h-dvh pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-primary focus:shadow-float">
+          Skip to main content
+        </a>
         <Header />
-        <main>{children}</main>
+        <main id="main" tabIndex={-1} className="outline-none">{children}</main>
         <TrustStrip />
         <Footer />
         <WhatsAppFab />
+        <MobileTabBar />
       </body>
     </html>
   );

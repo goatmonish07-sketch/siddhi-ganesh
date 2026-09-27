@@ -7,10 +7,10 @@ export function WhatsAppFab() {
       href={waLink("Hi, I have a query about my mobile.")}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-5 right-4 z-40 inline-flex items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-white text-label-lg shadow-float hover:brightness-95"
+      className="hidden lg:inline-flex fixed bottom-6 right-6 z-40 items-center gap-2 rounded-full bg-whatsapp px-4 py-3 text-on-surface text-label-lg shadow-float hover:brightness-95"
     >
       <Icon name="chat" fill />
-      <span className="hidden sm:inline">WhatsApp Support</span>
+      <span>WhatsApp Support</span>
     </a>
   );
 }

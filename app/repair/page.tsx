@@ -46,7 +46,7 @@ export default async function RepairPage({ searchParams }: Props) {
               <Icon name="build" className="text-[14px]" /> Service workshop · {SHOP.city}
             </span>
             <h1 className="text-[30px] leading-[38px] sm:text-headline-xl font-extrabold tracking-tight">Expert chip-level &amp; component mobile repair in Cheyyar</h1>
-            <p className="text-body-lg text-on-primary-container">
+            <p className="text-body-lg text-primary-fixed-dim">
               Express screen &amp; battery replacement. Genuine parts. 90 to 180 days warranty. Direct service by {SHOP.owner} &amp; certified technicians.
             </p>
           </div>
@@ -54,7 +54,7 @@ export default async function RepairPage({ searchParams }: Props) {
             <span className="grid place-items-center w-12 h-12 rounded-lg bg-secondary-container text-on-secondary-fixed font-display font-extrabold">30m</span>
             <div>
               <div className="text-label-lg">Express counter turnaround</div>
-              <div className="text-body-sm text-on-primary-container">Wait at the shop while we fix it</div>
+              <div className="text-body-sm text-primary-fixed-dim">Wait at the shop while we fix it</div>
             </div>
           </div>
         </Container>
@@ -64,7 +64,7 @@ export default async function RepairPage({ searchParams }: Props) {
         <RepairBooking brands={brands} models={models} services={services} initialService={service} />
       </Container>
 
-      <section className="bg-primary-container text-white py-12">
+      <section className="bg-primary-container text-white py-12 lg:py-16">
         <Container>
           <div className="text-label-sm uppercase tracking-widest text-gold">The Cheyyar customer shield</div>
           <h2 className="text-[24px] sm:text-headline-lg font-bold mb-6">Warranties on every service</h2>
@@ -75,14 +75,14 @@ export default async function RepairPage({ searchParams }: Props) {
                   <Icon name={w.icon} />
                 </span>
                 <h3 className="text-headline-sm">{w.title}</h3>
-                <p className="text-body-md text-on-primary-container mt-1">{w.body}</p>
+                <p className="text-body-md text-primary-fixed-dim mt-1">{w.body}</p>
               </div>
             ))}
           </div>
         </Container>
       </section>
 
-      <section className="py-12">
+      <section className="py-12 lg:py-16">
         <Container>
           <SectionHeading eyebrow="Fast turnaround workflow" title="How your phone gets fixed" />
           <div className="grid md:grid-cols-3 gap-4 mb-4">
@@ -99,12 +99,12 @@ export default async function RepairPage({ searchParams }: Props) {
               <Icon name="storefront" />
               <span><strong>{SHOP.name}</strong> · {fullAddress}</span>
             </div>
-            <a href={`tel:+91${SHOP.phone}`} className="rounded-lg bg-primary-container px-4 py-2 text-white text-label-lg">Call shop</a>
+            <a href={`tel:+91${SHOP.phone}`} className="inline-flex items-center min-h-11 rounded-lg bg-primary-container px-4 text-white text-label-lg">Call shop</a>
           </div>
         </Container>
       </section>
 
-      <section className="py-12 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <Container className="max-w-3xl">
           <SectionHeading center eyebrow="Frequently asked" title="Mobile repair answers" />
           <Faq items={FAQ} />

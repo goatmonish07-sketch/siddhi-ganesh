@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GradeBadge } from "@/components/Grade";
+import { MobileActionBar } from "@/components/MobileActionBar";
 import { Icon } from "@/components/Icon";
 import { ProductCard, ProductImage, discountPct } from "@/components/ProductCard";
 import { ReserveForm } from "@/components/ReserveForm";
@@ -46,10 +47,11 @@ export default async function ProductPage({ params }: Props) {
   };
 
   return (
-    <Container className="py-8 space-y-12">
+    <Container className="py-8 space-y-12 pb-28 lg:pb-8">
+      {!sold && <MobileActionBar label={`${p.name} · ${p.variant}`} value={formatINR(p.price)} cta="Reserve" target="reserve" />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <nav className="text-body-sm text-on-surface-variant">
-        <Link href="/buy" className="underline">Buy phones</Link> / {p.name}
+        <Link href="/buy" className="inline-flex items-center min-h-11 underline underline-offset-2">Buy phones</Link> / {p.name}
       </nav>
       <div className="grid lg:grid-cols-[1fr_1fr_360px] gap-6 items-start">
         <div className="relative">
@@ -63,7 +65,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
           <div className="flex items-baseline gap-3 tnum">
             <span className="font-display text-[36px] font-extrabold text-primary">{formatINR(p.price)}</span>
-            <span className="text-body-md text-outline line-through">{formatINR(p.mrp)}</span>
+            <span className="text-body-md text-muted line-through">{formatINR(p.mrp)}</span>
             {off > 0 && <span className="px-2 py-0.5 rounded bg-secondary-container text-label-md text-on-secondary-fixed">{off}% off</span>}
           </div>
           <div className="grid grid-cols-3 gap-2 text-center">
@@ -98,7 +100,7 @@ export default async function ProductPage({ params }: Props) {
             <strong>{GRADE_INFO[p.grade].label}:</strong> {GRADE_INFO[p.grade].points.join(" · ")}
           </div>
         </div>
-        <aside className="rounded-2xl bg-white border border-hairline p-5 shadow-lift lg:sticky lg:top-32">
+        <aside id="reserve" className="rounded-2xl bg-white border border-hairline p-5 shadow-lift lg:sticky lg:top-32">
           {sold ? (
             <div className="text-center space-y-2">
               <Icon name="event_busy" className="text-[36px] text-on-surface-variant" />
@@ -117,7 +119,7 @@ export default async function ProductPage({ params }: Props) {
       {similar.length > 0 && (
         <section>
           <h2 className="text-headline-md text-primary mb-4">Similar phones</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {similar.map((s) => <ProductCard key={s.id} product={s} />)}
           </div>
         </section>

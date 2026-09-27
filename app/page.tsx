@@ -91,7 +91,7 @@ export default async function Home() {
                     <div className="text-body-sm text-on-surface-variant">{SHOP.landmark}, {SHOP.city}</div>
                   </div>
                 </div>
-                <a className="px-3 py-1.5 rounded-lg bg-primary text-white text-label-sm" href={`tel:+91${SHOP.phone}`}>Call shop</a>
+                <a className="inline-flex items-center min-h-11 px-4 rounded-lg bg-primary text-white text-label-md" href={`tel:+91${SHOP.phone}`}>Call shop</a>
               </div>
               <div className="p-3 bg-surface-container-high rounded-xl flex items-center gap-2">
                 <Icon name="electric_bolt" className="text-secondary" />
@@ -103,7 +103,22 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-2 md:hidden">
+            {ACTIONS.map((a) => (
+              <Link
+                key={a.href}
+                href={a.href}
+                className="flex flex-col items-center text-center gap-2 rounded-2xl bg-white p-3 shadow-lift active:scale-[0.98] transition-transform"
+              >
+                <span className="grid place-items-center w-12 h-12 rounded-xl bg-secondary-container/50 text-primary">
+                  <Icon name={a.icon} className="text-[26px]" />
+                </span>
+                <span className="text-label-lg text-primary leading-tight">{a.title}</span>
+                <span className="text-label-sm text-secondary leading-tight">{a.href === "/buy" && cheapest ? `From ${formatINR(cheapest)}` : a.tag}</span>
+              </Link>
+            ))}
+          </div>
+          <div className="hidden md:grid md:grid-cols-3 gap-4">
             {ACTIONS.map((a) => (
               <Link
                 key={a.href}
@@ -116,7 +131,7 @@ export default async function Home() {
                     <span className="grid place-items-center w-12 h-12 rounded-xl bg-secondary-container/40 text-primary">
                       <Icon name={a.icon} className="text-[28px]" />
                     </span>
-                    <span className="px-2.5 py-1 rounded-full bg-secondary-fixed text-label-sm text-on-secondary-fixed">
+                    <span className="hidden lg:inline-block px-2.5 py-1 rounded-full bg-secondary-fixed text-label-sm text-on-secondary-fixed">
                       {a.href === "/buy" && cheapest ? `From ${formatINR(cheapest)}` : a.tag}
                     </span>
                   </div>
@@ -125,7 +140,7 @@ export default async function Home() {
                   <ul className="space-y-1.5 mb-4 text-body-sm">
                     {a.points.map((p) => (
                       <li key={p} className="flex items-center gap-2">
-                        <Icon name="check_circle" className="text-[16px] text-on-tertiary-container" /> {p}
+                        <Icon name="check_circle" className="text-[16px] text-success" /> {p}
                       </li>
                     ))}
                   </ul>
@@ -140,18 +155,18 @@ export default async function Home() {
       </section>
 
       {/* Brands */}
-      <section className="py-12 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-2">
             <SectionHeading eyebrow="Instant trade-in valuation" title="Select your phone brand" sub="Tap your brand to get an instant quote for your used phone." />
-            <Link href="/sell" className="mb-6 text-label-lg text-primary underline underline-offset-4">All {models.length}+ models →</Link>
+            <Link href="/sell" className="mb-6 inline-flex items-center min-h-11 text-label-lg text-primary underline underline-offset-4">All {models.length}+ models →</Link>
           </div>
           <BrandGrid brands={brands} maxPrices={maxPrices} />
         </Container>
       </section>
 
       {/* How it works */}
-      <section className="py-12">
+      <section className="py-12 lg:py-16">
         <Container>
           <SectionHeading center eyebrow="Simple · Safe · Fast" title="How selling works in Cheyyar" sub="Skip unreliable classifieds. Sell directly to us with verified spot payout." />
           <div className="grid md:grid-cols-3 gap-4 mb-6">
@@ -171,26 +186,26 @@ export default async function Home() {
       </section>
 
       {/* Repairs */}
-      <section className="py-12 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-2">
             <SectionHeading eyebrow="Cheyyar's master tech bench" title="Full-spectrum mobile repair" sub="From screen replacements to chip-level motherboard work." />
             <span className="mb-6 px-3 py-1 rounded-full bg-secondary-fixed text-label-sm text-on-secondary-fixed">Up to 6-month warranty on displays</span>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {services.map((s) => {
               const from = startingPrice(s);
               return (
-                <Link key={s.key} href={`/repair?service=${s.key}`} className="group rounded-2xl border border-hairline bg-surface-container-lowest p-5 shadow-card hover:shadow-lift transition-shadow">
+                <Link key={s.key} href={`/repair?service=${s.key}`} className="group flex flex-col rounded-2xl border border-hairline bg-surface-container-lowest p-4 sm:p-5 shadow-card hover:shadow-lift transition-shadow">
                   <span className="grid place-items-center w-11 h-11 rounded-xl bg-surface-container text-primary mb-3">
                     <Icon name={s.icon} />
                   </span>
-                  <h3 className="text-headline-sm text-primary">{s.name}</h3>
+                  <h3 className="text-label-lg sm:text-headline-sm text-primary">{s.name}</h3>
                   <div className="text-label-sm uppercase text-secondary mt-0.5">{s.badge}</div>
-                  <p className="text-body-md text-on-surface-variant mt-2">{s.description}</p>
-                  <div className="flex items-center justify-between mt-4 text-label-lg">
+                  <p className="hidden sm:block text-body-md text-on-surface-variant mt-2">{s.description}</p>
+                  <div className="flex flex-wrap items-center justify-between gap-1 mt-auto pt-3 text-label-md sm:text-label-lg">
                     <span className="text-primary tnum">{from ? `From ${formatINR(from)}` : "Price after diagnosis"}</span>
-                    <span className="text-on-surface-variant group-hover:text-primary">Book →</span>
+                    <span className="hidden sm:inline text-on-surface-variant group-hover:text-primary">Book →</span>
                   </div>
                 </Link>
               );
@@ -201,13 +216,13 @@ export default async function Home() {
 
       {/* Deals */}
       {products.length > 0 && (
-        <section className="py-12">
+        <section className="py-12 lg:py-16">
           <Container>
             <div className="flex flex-wrap items-end justify-between gap-2">
               <SectionHeading eyebrow="Certified & store inspected" title="Today's second-hand deals" sub="Every handset passes our 32-point inspection and comes with a shop warranty." />
-              <Link href="/buy" className="mb-6 text-label-lg text-primary underline underline-offset-4">View all phones →</Link>
+              <Link href="/buy" className="mb-6 inline-flex items-center min-h-11 text-label-lg text-primary underline underline-offset-4">View all phones →</Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {products.slice(0, 4).map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

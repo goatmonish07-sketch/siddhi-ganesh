@@ -3,7 +3,7 @@ import {
   ChevronDown, Circle, CircleCheck, CircleCheckBig, ClipboardCheck, Clock, Cpu, DatabaseBackup, Droplet, Eraser, Fingerprint,
   Handshake, ImageOff, IndianRupee, Info, Lock, MapPin, Menu, MessageCircle, Navigation, Package, Phone, Power, PowerOff, Receipt,
   RefreshCw, Repeat, ScanLine, Search, Settings, Shield, ShieldCheck, ShoppingBag, Smartphone, Sparkles, Stethoscope, Store,
-  Truck, TriangleAlert, Volume2, Wifi, Wrench, X, Zap, Check, CalendarX, type LucideIcon,
+  Truck, TriangleAlert, LoaderCircle, ArrowDown, Volume2, Wifi, Wrench, X, Zap, Check, CalendarX, type LucideIcon,
 } from "lucide-react";
 
 // Icon names follow Material Symbols so they can be stored as plain strings
@@ -47,6 +47,8 @@ const ICONS: Record<string, LucideIcon> = {
   payments: Banknote,
   photo_camera: Camera,
   power: Power,
+  progress: LoaderCircle,
+  arrow_downward: ArrowDown,
   power_off: PowerOff,
   radio_button_unchecked: Circle,
   receipt_long: Receipt,
