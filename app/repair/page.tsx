@@ -33,10 +33,8 @@ const FAQ = [
   { q: "Do you offer pickup within Cheyyar?", a: "Yes, choose 'Free doorstep pickup' while booking and we'll collect and return your phone within Cheyyar town." },
 ];
 
-type Props = { searchParams: Promise<{ service?: string }> };
-
-export default async function RepairPage({ searchParams }: Props) {
-  const [{ service }, brands, models, services] = await Promise.all([searchParams, getBrands(), getModels(), getRepairServices()]);
+export default async function RepairPage() {
+  const [brands, models, services] = await Promise.all([getBrands(), getModels(), getRepairServices()]);
   return (
     <>
       <section className="bg-gradient-to-br from-primary-container to-primary text-white py-10">
@@ -61,7 +59,7 @@ export default async function RepairPage({ searchParams }: Props) {
       </section>
 
       <Container className="py-8">
-        <RepairBooking brands={brands} models={models} services={services} initialService={service} />
+        <RepairBooking brands={brands} models={models} services={services} />
       </Container>
 
       <section className="bg-primary-container text-white py-12 lg:py-16">

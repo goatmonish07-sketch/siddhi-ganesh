@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Icon } from "./Icon";
-import { inputCls, labelCls } from "./booking";
+import { inputCls, isStaticSite, labelCls } from "./booking";
+import { waLink } from "@/lib/whatsapp";
 
 const STATUS_LABEL: Record<string, string> = {
   new: "Received — we'll confirm shortly",
@@ -38,6 +39,22 @@ export function TrackForm() {
     } finally {
       setPending(false);
     }
+  }
+
+  if (isStaticSite) {
+    return (
+      <div className="rounded-2xl bg-white border border-hairline p-5 shadow-card space-y-3">
+        <p className="text-body-lg text-on-surface-variant">Send us your request ID on WhatsApp and we&apos;ll reply with the latest status of your sale, repair or reservation.</p>
+        <a
+          href={waLink("Hi, please share the status of my request. ID: ")}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-12 items-center gap-2 rounded-lg bg-whatsapp px-5 text-on-surface text-label-lg"
+        >
+          <Icon name="chat" /> Check status on WhatsApp
+        </a>
+      </div>
+    );
   }
 
   const stepIdx = found ? STEPS.indexOf(found.status === "ready" ? "in_progress" : found.status) : -1;

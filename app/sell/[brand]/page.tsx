@@ -9,6 +9,10 @@ export const revalidate = 300;
 
 type Props = { params: Promise<{ brand: string }> };
 
+export async function generateStaticParams() {
+  return (await getBrands()).map((b) => ({ brand: b.slug }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { brand } = await params;
   const b = (await getBrands()).find((x) => x.slug === brand);

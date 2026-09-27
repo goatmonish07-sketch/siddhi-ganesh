@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { RequestInput } from "@/lib/requests";
+import { newRequestId, requestSchema, type RequestInput } from "@/lib/requests";
 import { TIME_SLOTS } from "@/lib/shop";
 import { Icon } from "./Icon";
 
@@ -121,6 +121,8 @@ export function contactPayload(c: ContactState) {
   };
 }
 
+export const isStaticSite = process.env.NEXT_PUBLIC_STATIC_EXPORT === "1";
+
 export function useSubmitRequest() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -130,6 +132,14 @@ export function useSubmitRequest() {
     setPending(true);
     setError(null);
     try {
+      if (isStaticSite) {
+        // Static hosting: no server to save to, so validate here and hand off to WhatsApp.
+        const parsed = requestSchema.safeParse(payload);
+        if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Please check your details");
+        const data = { id: newRequestId(parsed.data.kind), saved: false };
+        setResult(data);
+        return data;
+      }
       const res = await fetch("/api/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

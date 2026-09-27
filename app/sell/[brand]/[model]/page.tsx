@@ -4,12 +4,16 @@ import { notFound } from "next/navigation";
 import { Icon } from "@/components/Icon";
 import { Container } from "@/components/Section";
 import { SellQuote } from "@/components/SellQuote";
-import { getBrands, getConditionQuestions, getModel } from "@/lib/data";
+import { getBrands, getConditionQuestions, getModel, getModels } from "@/lib/data";
 import { formatINR } from "@/lib/shop";
 
 export const revalidate = 300;
 
 type Props = { params: Promise<{ brand: string; model: string }> };
+
+export async function generateStaticParams() {
+  return (await getModels()).map((m) => ({ brand: m.brandSlug, model: m.slug }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { brand, model } = await params;

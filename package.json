@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "seed:generate": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-seed.mts"
+    "seed:generate": "node --experimental-strip-types --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-seed.mts",
+    "build:static": "node scripts/build-static.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.2",

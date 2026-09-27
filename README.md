@@ -55,5 +55,14 @@ To change the bundled defaults instead, edit `lib/catalog.ts` and run `npm run s
 
 Import the GitHub repo in Vercel, add the environment variables above plus `NEXT_PUBLIC_SITE_URL` (your domain), and deploy.
 
+## Deploy as a static site (Cloudflare Pages direct upload)
+
+```bash
+npm run build:static   # writes plain HTML to out/
+```
+
+Upload the `out/` folder (or a zip of it) in Cloudflare → Workers & Pages → Create → Pages → Upload assets.
+In this mode there is no server, so bookings get their ID in the browser and go straight to WhatsApp, and the Track page asks customers to check status on WhatsApp. Prices come from `lib/catalog.ts` at build time, so rebuild and re-upload after changing them.
+
 ## Phase 2 ideas
 Admin panel at `/admin` (edit prices/stock and manage bookings without Supabase), customer OTP login, Razorpay advance payments, Tamil language, automatic WhatsApp Business notifications, reviews, and exchange offers.

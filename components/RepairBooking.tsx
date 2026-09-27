@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Brand, PhoneModel, RepairService } from "@/lib/types";
 import { formatDuration, repairEstimate, repairPrice, startingPrice } from "@/lib/repair";
 import { formatINR } from "@/lib/shop";
@@ -15,18 +15,22 @@ export function RepairBooking({
   brands,
   models,
   services,
-  initialService,
 }: {
   brands: Brand[];
   models: PhoneModel[];
   services: RepairService[];
-  initialService?: string;
 }) {
   const [brandSlug, setBrandSlug] = useState(brands[0]?.slug ?? "");
   const brandModels = models.filter((m) => m.brandSlug === brandSlug);
   const [modelSlug, setModelSlug] = useState(brandModels[0]?.slug ?? OTHER);
   const [otherModel, setOtherModel] = useState("");
-  const [picked, setPicked] = useState<string[]>(initialService && services.some((s) => s.key === initialService) ? [initialService] : []);
+  const [picked, setPicked] = useState<string[]>([]);
+
+  // Preselect the issue from links like /repair?service=display (read client-side so the page stays static).
+  useEffect(() => {
+    const key = new URLSearchParams(window.location.search).get("service");
+    if (key && services.some((s) => s.key === key)) setPicked((p) => (p.includes(key) ? p : [...p, key]));
+  }, [services]);
   const [notes, setNotes] = useState("");
   const [contact, setContact] = useState(emptyContact);
   const [waUrl, setWaUrl] = useState("");

@@ -15,6 +15,10 @@ export const revalidate = 60;
 
 type Props = { params: Promise<{ id: string }> };
 
+export async function generateStaticParams() {
+  return (await getProducts()).map((p) => ({ id: p.id }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getProduct((await params).id);
   if (!p) return { title: "Phone not found" };
